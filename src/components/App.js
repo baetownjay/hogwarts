@@ -8,22 +8,35 @@ import SingleHogCard from "./SingleHogCard";
 class App extends Component {
   state = {
     view: 'all',
-    currentId: null
+    currentName: null,
+    pigGif: ''
   }
-  changeView = (renderView, id) => {
+  changeView = (renderView, name) => {
+    // console.log(id)
     this.setState({
       view: renderView,
-      currentId: id
+      currentName: name
     })
   }
+  componentDidMount(){
+        fetch('https://api.giphy.com/v1/gifs/search?q=pig&api_key=zbDm4ea54WvOs4XQRzrqMd7DcEA2MDOT')
+        .then(r => r.json())
+        .then(pigData => {
+          // debugger 
+          this.setState({
+            pigGif: pigData.data[Math.floor(Math.random() * 51)].images.original.url
+          })
+  })
+  }
+
   renderState = () => {
     if (this.state.view === 'all'){
       return <HogContainer hogs={hogs} changeView={this.changeView} />
     }
     else if (this.state.view === 'single'){
       
-      let hog = hogs.find(hog => hog.id === this.state.currentId)
-      return <SingleHogCard hog={hog} />
+      let hog = hogs.find(hog => hog.name === this.state.currentName)
+      return <SingleHogCard hog={hog} pigGif={this.state.pigGif}/>
     }
     else if (this.state.view === 'greased'){
       let greasedHogs = hogs.filter(hog => hog.greased === true)

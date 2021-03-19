@@ -2,20 +2,24 @@ import React, { Component } from "react";
 
 
 const HogCard = ({hog, changeView}) => {
-    // debugger
 
-    const { name, specialty, greased, weight, id } = hog
+
+    const { name } = hog
     let pigImage = require(`../hog-imgs/${name.toLowerCase().replaceAll(' ', '_')}.jpg`) 
-
-
+    const hideTile = (e) => {
+        // debugger
+        e.target.parentElement.style.display = 'none'
+    }
+    // debugger
     return (
-        <div onClick={() => changeView('single', id)} className="pigTile" >
-            <div className="pigImage" >
+        <div  className="pigTile" onClick={() => changeView('single', name)} >
+            <div className="pigImage"  >
                 <img src={pigImage} />
                 <div className="card-body">
                     <h3 className="pigTile h3">{name}</h3>
                 </div>
             </div>
+                    <button onClick={(e) => hideTile(e)}>Hide Me</button>
         </div>
     )
 }
